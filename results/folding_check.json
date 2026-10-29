@@ -1,0 +1,7 @@
+{
+  "description": "A velocity network trained at t = 0 (run 1), folded into DirectMapping",
+  "velocity_net_params_M": 12.389,
+  "direct_params_M": 10.926,
+  "max_relative_latent_difference": 6.5356544488098566e-06,
+  "max_image_difference_out_of_255": 0.001277918927371502
+}

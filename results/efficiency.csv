@@ -1,0 +1,5 @@
+"mapping (Tesla T4, 256x256)",params_M,mapping_gflops_256,mapping_ms_bs16,pipeline_ms_bs16,mapping_ms_bs1,pipeline_ms_bs1
+BOPBTL mapping,36.14,295.95,40.54,45.83,116.13,128.81
+Ours,10.93,89.39,19.21,27.03,40.07,51.27
+"Flow network, 1 step",12.39,90.6,20.04,28.72,41.63,52.84
+"Flow network, 4 steps",12.39,362.4,79.77,88.59,167.0,178.95

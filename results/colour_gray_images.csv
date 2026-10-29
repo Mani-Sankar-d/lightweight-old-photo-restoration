@@ -1,0 +1,7 @@
+method,dE00 median,dE00 mean,dL* (lightness),false a* (+red/-green),false b* (+yellow/-blue),tint,false chroma C*,% pixels tinted (C*>5),detail contrast ratio
+Degraded input,1.5,3.089,0.002,0.0,-0.0,none,0.009,0.04,0.898
+BOPBTL mapping,3.6,4.829,-0.345,0.297,0.06,none,2.049,7.429,0.842
+Ours (run 1),4.2,5.464,-0.097,0.459,-0.158,none,2.172,7.315,0.812
+Ours (run 2),4.1,5.418,0.219,0.348,-0.148,none,2.066,6.307,0.804
+"Bridge flow, 1 step",4.3,5.602,-0.196,0.521,-0.317,red/magenta,2.028,5.308,0.726
+VAE ceiling,4.1,4.754,-1.779,0.464,-0.017,none,2.383,10.174,0.872

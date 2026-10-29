@@ -1,0 +1,7 @@
+method,dE00 median,dE00 mean,dE00 p95,dL* (lightness),cast a* (+red/-green),cast b* (+yellow/-blue),cast,cast measured on,saturation scale s (fit),cast a* (fit),cast b* (fit),mean da* (cast+sat mixed),mean db* (cast+sat mixed),chroma ratio (out/gt),colourfulness out,colourfulness gt,detail contrast ratio,mean |hue shift| deg
+Degraded input,3.9,6.361,21.3,0.151,0.339,0.413,none,neutral px,0.915,0.343,0.516,0.106,0.021,1.203,40.346,37.817,0.892,12.378
+BOPBTL mapping,5.2,6.52,16.4,0.138,-0.089,0.749,yellow,neutral px,0.883,-0.005,1.326,-0.33,0.647,0.991,37.121,37.817,0.826,12.401
+Ours (run 1),6.5,7.757,18.2,-0.184,-0.21,0.266,none,neutral px,0.817,-0.226,1.092,-0.735,0.028,1.001,35.703,37.817,0.799,14.131
+Ours (run 2),6.6,7.883,18.3,0.05,-0.263,0.435,none,neutral px,0.806,-0.23,1.399,-0.77,0.273,1.002,35.812,37.817,0.79,14.225
+"Bridge flow, 1 step",7.0,8.196,18.7,-0.585,-0.334,-0.539,blue,neutral px,0.769,-0.508,0.316,-1.15,-1.025,0.964,34.061,37.817,0.722,14.619
+VAE ceiling,5.3,6.254,14.2,-2.093,0.547,0.103,red/magenta,neutral px,0.872,0.743,0.405,0.387,-0.34,0.968,35.38,37.817,0.85,12.284

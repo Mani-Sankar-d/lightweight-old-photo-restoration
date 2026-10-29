@@ -1,0 +1,13 @@
+torch>=2.0
+torchvision>=0.15
+numpy
+pillow
+opencv-python
+scikit-image
+pandas
+matplotlib
+# evaluation
+lpips
+pytorch-fid
+# no-reference metrics on real photos (MUSIQ, CLIP-IQA, NIQE)
+pyiqa
