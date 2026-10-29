@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# model files and run outputs (weights are published as a GitHub release)
+*.pt
+*.pth
+*.tmp
+checkpoints/
+restored/
+outputs/
+
+# local copies of external data and code
+Bringing-Old-Photos-Back-to-Life/
+data/
+benchmarks/

@@ -1,8 +1,10 @@
 """
 Restore photos with the lightweight direct mapping (and, optionally, BOPBTL's original mapping for comparison).
 
-    python src/restore.py --weights mapping_direct.pt --input photos/ --output restored/
-    python src/restore.py --weights mapping_direct.pt --input photo.jpg --output restored/ --compare
+    python src/restore.py --input photos/ --output restored/
+    python src/restore.py --input photo.jpg --output restored/ --compare --weights mapping_direct.pt
+
+Without --weights, the released model is downloaded once to ~/.cache/lightweight_old_photos/.
 
 Uses BOPBTL's frozen global-restoration VAEs (quality mode). The Microsoft repository and its pretrained
 checkpoints are found or downloaded by OldPhotoModel (pass --repo to point at an existing clone).
@@ -22,6 +24,18 @@ from direct_model import load_direct
 from old_photo_model import OldPhotoModel
 
 IMG_EXT = (".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".webp")
+WEIGHTS_URL = ("https://github.com/Mani-Sankar-d/lightweight-old-photo-restoration/"
+               "releases/download/v1.0/mapping_direct.pt")
+
+
+def default_weights():
+    """The released model, downloaded once to ~/.cache/lightweight_old_photos/."""
+    path = os.path.join(os.path.expanduser("~"), ".cache", "lightweight_old_photos", "mapping_direct.pt")
+    if not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        print(f"downloading {WEIGHTS_URL}")
+        torch.hub.download_url_to_file(WEIGHTS_URL, path)
+    return path
 
 
 def mean_chroma(img):
@@ -56,7 +70,8 @@ def restore(obj, img, net):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--weights", required=True, help="mapping_direct.pt (or a train_direct final.pt)")
+    p.add_argument("--weights", default=None,
+                   help="mapping_direct.pt or a train_direct final.pt (default: download the released model)")
     p.add_argument("--input", required=True, help="an image file or a folder of images")
     p.add_argument("--output", required=True, help="output folder")
     p.add_argument("--repo", default=None, help="path to a clone of microsoft/Bringing-Old-Photos-Back-to-Life")
@@ -67,7 +82,7 @@ def main():
     args = p.parse_args()
 
     obj = OldPhotoModel(repo_root=args.repo, mode="quality", gpu=-1 if args.cpu else 0)
-    nets = {"ours": load_direct(args.weights, obj.device)[0]}
+    nets = {"ours": load_direct(args.weights or default_weights(), obj.device)[0]}
     if args.compare:
         nets["bopbtl"] = obj._core.mapping_net
 

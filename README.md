@@ -7,6 +7,8 @@ Microsoft's [*Bringing Old Photos Back to Life*](https://github.com/microsoft/Br
 
 The mapping is the most expensive part. This project replaces it with a network that is **3.3× smaller and 2–3× faster**, trained with the same kinds of losses, and keeps everything else unchanged.
 
+📄 **Paper:** [paper/paper.pdf](paper/paper.pdf)
+
 It also shows that **flow matching is unnecessary** for this mapping. The same network trained as a flow never beats it trained as a direct regressor, at any number of sampling steps.
 
 ```
@@ -43,7 +45,7 @@ The COCO benchmark has 4,958 synthetically degraded/clean pairs that were never 
 
 **No.** Flows are designed to move one *distribution* onto another when it isn't known which input belongs to which output. Here every degraded photo comes with its clean original, so the problem is *point to point*.
 
-A one-step flow only ever evaluates its network at t = 0. There, the time conditioning is a constant scale and shift, which folds exactly into the network's GroupNorm layers. Folding a trained flow network gives identical outputs ([`results/folding_check.json`](results/folding_check.json)), and its optimum equals that of direct regression. The paper has the details.
+A one-step flow only ever evaluates its network at t = 0. There, the time conditioning is a constant scale and shift, which folds exactly into the network's GroupNorm layers. Folding a trained flow network gives identical outputs ([`results/folding_check.json`](results/folding_check.json)), and its optimum equals that of direct regression. The [paper](paper/paper.pdf) has the details.
 
 ## Folder layout
 
@@ -52,7 +54,7 @@ A one-step flow only ever evaluates its network at t = 0. There, the time condit
 | `src/` | All code as Python modules |
 | `notebooks/` | Google Colab notebooks, in the order to run them |
 | `results/` | Result tables (CSV), figures, and the restored real photos |
-| `paper/` | The paper (LaTeX), bibliography and figures |
+| `paper/paper.pdf` | The paper |
 | `requirements.txt` | Python dependencies |
 
 ### `src/`
@@ -72,12 +74,14 @@ A one-step flow only ever evaluates its network at t = 0. There, the time condit
 
 ### `notebooks/`
 
-| Notebook | What it does |
-|---|---|
-| `01_build_coco_benchmark.ipynb` | Builds the frozen COCO benchmark (once); scores the input, BOPBTL and the VAE ceiling |
-| `02_train.ipynb` | Trains our model, or the bridge flow for the ablation (resumable) |
-| `03_evaluate.ipynb` | Every number and figure: folding check, benchmark, ablation, efficiency, colour, real photos |
-| `04_inference.ipynb` | Restores your own photos with our mapping and BOPBTL's, side by side |
+| Notebook | What it does | |
+|---|---|---|
+| `01_build_coco_benchmark.ipynb` | Builds the frozen COCO benchmark (once); scores the input, BOPBTL and the VAE ceiling | [Open in Colab](https://colab.research.google.com/github/Mani-Sankar-d/lightweight-old-photo-restoration/blob/main/notebooks/01_build_coco_benchmark.ipynb) |
+| `02_train.ipynb` | Trains our model, or the bridge flow for the ablation (resumable) | [Open in Colab](https://colab.research.google.com/github/Mani-Sankar-d/lightweight-old-photo-restoration/blob/main/notebooks/02_train.ipynb) |
+| `03_evaluate.ipynb` | Every number and figure: folding check, benchmark, ablation, efficiency, colour, real photos | [Open in Colab](https://colab.research.google.com/github/Mani-Sankar-d/lightweight-old-photo-restoration/blob/main/notebooks/03_evaluate.ipynb) |
+| `04_inference.ipynb` | Restores your own photos with our mapping and BOPBTL's, side by side; no Google Drive needed | [Open in Colab](https://colab.research.google.com/github/Mani-Sankar-d/lightweight-old-photo-restoration/blob/main/notebooks/04_inference.ipynb) |
+
+Notebooks 01–03 store data and checkpoints in a Google Drive folder (`ROOT` in each notebook).
 
 Each notebook is self-contained: it writes the modules it needs, identical to `src/`, so it runs on a fresh Colab GPU runtime.
 
@@ -94,21 +98,28 @@ Each notebook is self-contained: it writes the modules it needs, identical to `s
 
 ## Quick start: restore your photos
 
-**On Colab:** open `notebooks/04_inference.ipynb`, set `WEIGHTS` to the model file, put photos in `/content/inputs`, and run all cells.
+**On Colab, no setup needed:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mani-Sankar-d/lightweight-old-photo-restoration/blob/main/notebooks/04_inference.ipynb). Choose a GPU runtime, run all cells, upload photos to `/content/inputs`, and run the last cell again.
 
 **Locally** (GPU recommended):
 
 ```bash
+git clone https://github.com/Mani-Sankar-d/lightweight-old-photo-restoration
+cd lightweight-old-photo-restoration
 pip install -r requirements.txt
 git clone https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life
 cd src
-python restore.py --repo ../Bringing-Old-Photos-Back-to-Life --weights mapping_direct.pt \
-                  --input my_photos/ --output restored/ --compare
+python restore.py --repo ../Bringing-Old-Photos-Back-to-Life --input my_photos/ --output restored/ --compare
 ```
 
-`--compare` also saves BOPBTL's result for each photo. The VAE checkpoints are downloaded automatically on first use.
+- The model weights are downloaded automatically from the release on first use. Pass `--weights <file>` to use your own.
+- Microsoft's VAE checkpoints are also downloaded on first use.
+- `--compare` also saves BOPBTL's result for each photo.
 
-**Model weights:** `mapping_direct.pt` (44 MB). *[Add the download link here.]*
+**Model weights:** [`mapping_direct.pt`](https://github.com/Mani-Sankar-d/lightweight-old-photo-restoration/releases/download/v1.0/mapping_direct.pt) (44 MB, release v1.0):
+
+```bash
+wget https://github.com/Mani-Sankar-d/lightweight-old-photo-restoration/releases/download/v1.0/mapping_direct.pt
+```
 
 ## Reproducing the results
 
